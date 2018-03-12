@@ -9,6 +9,7 @@ const {dbConnect} = require('./db-mongoose');
 // const {dbConnect} = require('./db-knex');
 
 const app = express();
+const billsRouter = require('./routes/bills.routers');
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -21,6 +22,8 @@ app.use(
     origin: CLIENT_ORIGIN
   })
 );
+
+app.use('/api', billsRouter);
 
 function runServer(port = PORT) {
   const server = app
