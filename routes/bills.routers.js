@@ -5,6 +5,16 @@ const router = express.Router();
 
 router.get('/bills', (req, res, next) => {
 
+
+  // const staticBills = [
+  //   {name: 'Internet',
+  //   amount: 65,
+  // },
+  // {name: 'Groceries',
+  // amount: 250,
+  // },
+  // ];
+
   const bills = [
     'Internet $65',
     'Groceries $250',
