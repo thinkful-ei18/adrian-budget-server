@@ -1,0 +1,1 @@
+-- `psql -U dev -f ./db/budget.app.sql -d budget-app`
