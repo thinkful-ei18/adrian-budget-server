@@ -1,5 +1,8 @@
 -- `psql -U dev -f ./db/budget.app.sql -d dev-budget-app`
+-- `psql -U dev -f ./db/manual-seed.sql -d dev-budget-app`
+
 -- `psql -U dev -f ./db/budget.app.sql -d test-budget-app`
+-- `psql -U dev -f ./db/manual-seed.sql -d test-budget-app`
 
 DROP TABLE IF EXISTS bills_categories;
 DROP TABLE IF EXISTS bills;
