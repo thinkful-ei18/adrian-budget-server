@@ -27,7 +27,7 @@ CREATE TABLE bills (
   category_id int REFERENCES categories ON DELETE RESTRICT,
   user_id int REFERENCES users ON DELETE RESTRICT,
   name text NOT NULL,
-  amount int NOT NULL,
+  amount money NOT NULL,
   created timestamp DEFAULT now()
 );
 
