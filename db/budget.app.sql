@@ -22,6 +22,7 @@ CREATE TABLE users (
   fullname text NOT NULL,
   username text NOT NULL UNIQUE,
   password text NOT NULL,
+  income smallint,
   created timestamp DEFAULT now()
 );
 
