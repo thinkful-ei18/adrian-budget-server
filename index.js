@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 
 const {PORT, CLIENT_ORIGIN} = require('./config');
 // const {dbConnect} = require('./db-mongoose');
@@ -23,7 +24,7 @@ app.use(
   })
 );
 
-app.use(express.json());
+app.use(bodyParser.json());
 
 app.use('/api', billsRouter);
 

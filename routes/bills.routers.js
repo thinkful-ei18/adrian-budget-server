@@ -2,13 +2,14 @@
 
 const express = require('express');
 const router = express.Router();
-const knex = require('../knex');
+
+const {dbGet} = require('../db-knex');
 
 router.get('/bills', (req, res, next) => {
-
-  knex.select('bills.id', 'category_id', 'user_id', 'name', 'amount')
+  const knex = dbGet();
+  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
     .from('bills')
-    .leftJoin('categories', 'notes.category_id', 'categories.id')
+    .leftJoin('categories', 'bills.category_id', 'categories.id')
     .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
     .orderBy('bills.id')
     .then(results => console.log(results));

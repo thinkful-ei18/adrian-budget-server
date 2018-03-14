@@ -7,9 +7,14 @@ const {DATABASE_URL} = require('./config');
 let knex = null;
 
 function dbConnect(url = DATABASE_URL) {
+  console.log('Connecting...');
   knex = createKnex({
     client: 'pg',
-    connection: url
+    connection: {
+      user: 'dev',
+      database: 'dev-budget-app'
+    }
+
   });
 }
 

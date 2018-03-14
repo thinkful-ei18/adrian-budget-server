@@ -13,6 +13,8 @@
   "author": "Joe Turner <jturner@thinkful.com>",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect": "^3.6.6",
     "cors": "^2.8.4",
     "express": "^4.15.4",
     "knex": "^0.13.0",
