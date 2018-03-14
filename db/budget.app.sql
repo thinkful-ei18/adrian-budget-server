@@ -1,4 +1,11 @@
--- `psql -U dev -f ./db/budget.app.sql -d budget-app`
+-- `psql -U dev -f ./db/budget.app.sql -d dev-budget-app`
+-- `psql -U dev -f ./db/budget.app.sql -d test-budget-app`
+
+DROP TABLE IF EXISTS bills_categories;
+DROP TABLE IF EXISTS bills;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
+
 
 CREATE TABLE categories (
   id serial PRIMARY KEY,
@@ -18,9 +25,9 @@ CREATE TABLE users (
 CREATE TABLE bills (
   id serial PRIMARY KEY,
   category_id int REFERENCES categories ON DELETE RESTRICT,
-  user_id int REFERENCES users ON DELETE SET NULL,
+  user_id int REFERENCES users ON DELETE RESTRICT,
   name text NOT NULL,
-  amount number NOT NULL,
+  amount int NOT NULL,
   created timestamp DEFAULT now()
 );
 
