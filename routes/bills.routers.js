@@ -12,42 +12,9 @@ router.get('/bills', (req, res, next) => {
     .leftJoin('categories', 'bills.category_id', 'categories.id')
     .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
     .orderBy('bills.id')
-    .then(results => console.log(results));
-
-
-  const bills = [
-    {
-      name: 'Internet',
-      amount: 65,
-    },
-    {
-      name: 'Groceries',
-      amount: 250,
-    },
-    {
-      name: 'Utilities',
-      amount: 300,
-    },
-    {
-      name: 'Rent',
-      amount: 1250,
-    },
-    {
-      name: 'Cellphone',
-      amount: 55,
-    },
-    {
-      name: 'Netflix',
-      amount: 15,
-    },
-    {
-      name: 'Spotify',
-      amount: 15,
-    },
-  ];
-
-  return res.json(bills);
-
+    .then(results => res.json(results))
+    .catch(err => {next(err);
+    });
 });
 
 module.exports = router;
