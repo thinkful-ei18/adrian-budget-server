@@ -23,6 +23,8 @@ app.use(
   })
 );
 
+app.use(express.json());
+
 app.use('/api', billsRouter);
 
 app.use(function (req, res, next) {
