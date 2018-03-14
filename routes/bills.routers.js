@@ -20,7 +20,7 @@ router.get('/bills', (req, res, next) => {
 router.post('/bills', (req, res, next) => {
   const { name, amount, category_id } = req.body;
 
-  if (!req.body.name || !req.body.amount) {
+  if (!req.body.name) {
     const err = new Error('Missing `name` in request body');
     err.status = 400;
     return next(err);
@@ -50,7 +50,7 @@ router.post('/bills', (req, res, next) => {
     })
     .then(result => {
       if (result) {
-        res.location(`${req.originalUrl}/${billId}`).status(201).json;
+        res.location(`${req.originalUrl}/${billId}`).status(201).json(result);
       } else {
         next();
       }
