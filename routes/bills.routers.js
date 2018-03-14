@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 
 const {dbGet} = require('../db-knex');
+const knex = dbGet();
 
 router.get('/bills', (req, res, next) => {
   const knex = dbGet();
@@ -18,6 +19,7 @@ router.get('/bills', (req, res, next) => {
 });
 
 router.post('/bills', (req, res, next) => {
+  const knex = dbGet();
   const { name, amount, category_id } = req.body;
 
   if (!req.body.name) {
@@ -34,7 +36,6 @@ router.post('/bills', (req, res, next) => {
 
   let billId;
 
-  const knex = dbGet();
   knex.insert(newBill)
     .into('bills')
     .returning('id')
@@ -46,7 +47,8 @@ router.post('/bills', (req, res, next) => {
         .from('bills')
         .leftJoin('categories', 'bills.category_id', 'categories.id')
         .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
-        .where('bills.id', billId);
+        .where('bills.id', billId)
+        .first();
     })
     .then(result => {
       if (result) {
