@@ -33,6 +33,8 @@ CREATE TABLE bills (
   name text NOT NULL,
   amount smallint NOT NULL,
   beenpaid boolean,
+  duedate date,
+  billinterval interval,
   created timestamp DEFAULT now()
 );
 
