@@ -32,6 +32,7 @@ CREATE TABLE bills (
   user_id int REFERENCES users ON DELETE RESTRICT,
   name text NOT NULL,
   amount smallint NOT NULL,
+  beenpaid boolean,
   created timestamp DEFAULT now()
 );
 
