@@ -8,7 +8,7 @@ const {dbGet} = require('../db-knex');
 router.post ('/users', (req, res, next) => {
   const knex = dbGet();
 
-  const {fullname, username, password} = req.body;
+  const { fullname, username, password } = req.body;
 
   const newUser = {
     fullname: fullname,
@@ -25,7 +25,8 @@ router.post ('/users', (req, res, next) => {
       userId = id;
     })
     .then(() => {
-      return knex.select('fullname', 'username')
+      return knex.select('users.fullname', 'users.username')
+        .from('users')
         .where('users.id', userId)
         .first();
     })
