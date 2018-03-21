@@ -10,7 +10,8 @@ const {PORT, CLIENT_ORIGIN} = require('./config');
 const {dbConnect} = require('./db-knex');
 
 const app = express();
-const billsRouter = require('./routes/bills.routers');
+const billsRouter = require('./routes/bills.router');
+const usersRouter = require('./routes/users.router');
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -27,6 +28,7 @@ app.use(
 app.use(bodyParser.json());
 
 app.use('/api', billsRouter);
+app.use('/api', usersRouter);
 
 app.use(function (req, res, next) {
   // console.log('404 error ran');
