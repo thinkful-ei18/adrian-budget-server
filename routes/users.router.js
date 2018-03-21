@@ -31,7 +31,7 @@ router.post ('/users', (req, res, next) => {
     })
     .then (result => {
       if (result) {
-        res.location();
+        res.location(`${req.originalUrl}/${userId}`).status(201).json(result);
       } else {
         next();
       }
