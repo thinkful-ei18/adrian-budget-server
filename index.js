@@ -5,6 +5,7 @@ require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const localStrategy = require('./passport/local');
+const jwtStrategy = require('./passport/jwt');
 
 const cors = require('cors');
 const morgan = require('morgan');
@@ -33,11 +34,15 @@ app.use(
 
 app.use(bodyParser.json());
 
-passport.use(localStrategy);
-
-app.use('/api', billsRouter);
 app.use('/api', usersRouter);
 app.use('/api', authRouter);
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use(passport.authenticate('jwt', { session: false, failWithError: true }));
+
+app.use('/api', billsRouter);
 
 app.use(function (req, res, next) {
   // console.log('404 error ran');
