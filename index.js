@@ -16,7 +16,6 @@ const billsRouter = require('./routes/bills.router');
 const usersRouter = require('./routes/users.router');
 const authRouter = require('./routes/auth.router');
 
-passport.use(localStrategy);
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -32,6 +31,8 @@ app.use(
 
 app.use(bodyParser.json());
 
+passport.use(localStrategy);
+
 app.use('/api', billsRouter);
 app.use('/api', usersRouter);
 app.use('/api', authRouter);
@@ -44,7 +45,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (err, req, res) {
-  // console.log('error handler ran');
+  console.log('error handler ran');
   res.status(err.status || 500);
   res.json({
     message: err.message,
