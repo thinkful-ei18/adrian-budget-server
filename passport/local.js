@@ -5,9 +5,13 @@ const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 
 const app = express();
-app.use(express.static('public'));
+const bodyParser = require('body-parser');
+
 
 const {dbGet} = require('../db-knex');
+
+app.use(express.static('public'));
+app.use(bodyParser.json());
 
 const localStrategy = new LocalStrategy((username, password, done) => {
 
