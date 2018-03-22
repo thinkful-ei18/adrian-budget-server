@@ -13,11 +13,7 @@ router.post ('/users', (req, res, next) => {
 
   let userId;
 
-  function hashPassword (password) {
-    return bcrypt.hash(password, 10);
-  }
-
-  return hashPassword(password)
+  return bcrypt.hash(password, 10)
     .then(digest => {
       const newUser = {
         fullname: fullname,
