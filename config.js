@@ -14,3 +14,6 @@ module.exports = {
       process.env.TEST_DATABASE_URL ||
       'postgres://localhost/test-budget-app'
 };
+
+exports.JWT_SECRET = process.env.JWT_SECRET;
+exports.JWT_EXPIRY = process.env.JWT_EXPIRY || '7d';
