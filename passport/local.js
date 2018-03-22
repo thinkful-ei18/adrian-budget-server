@@ -11,9 +11,8 @@ app.use(express.json());
 const {dbGet} = require('../db-knex');
 
 const localStrategy = new LocalStrategy((username, password, done) => {
-  const knex = dbGet();
 
-  // let userId = req.params.id;
+  const knex = dbGet();
   let user;
 
   knex.select('users.username', 'users.password')
