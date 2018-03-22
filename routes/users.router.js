@@ -2,6 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcryptjs');
 
 const {dbGet} = require('../db-knex');
 
@@ -10,19 +11,25 @@ router.post ('/users', (req, res, next) => {
 
   const { fullname, username, password } = req.body;
 
-  const newUser = {
-    fullname: fullname,
-    username: username,
-    password: password
-  };
-
   let userId;
 
-  knex.insert(newUser)
-    .into('users')
-    .returning('id')
-    .then(([id]) => {
-      userId = id;
+  function hashPassword (password) {
+    return bcrypt.hash(password, 10);
+  }
+
+  return hashPassword(password)
+    .then(digest => {
+      const newUser = {
+        fullname: fullname,
+        username: username,
+        password: digest
+      };
+      return knex.insert(newUser)
+        .into('users')
+        .returning('id')
+        .then(([id]) => {
+          userId = id;
+        });
     })
     .then(() => {
       return knex.select('users.fullname', 'users.username')
@@ -40,6 +47,7 @@ router.post ('/users', (req, res, next) => {
     .catch (err => {
       next(err);
     });
+
 });
 
 module.exports = router;
