@@ -4,12 +4,10 @@ const express = require('express');
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const bcrypt = require('bcryptjs');
-
-const app = express();
 const bodyParser = require('body-parser');
-
 const {dbGet} = require('../db-knex');
 
+const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
