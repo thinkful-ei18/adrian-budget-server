@@ -32,7 +32,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
           location: 'username'
         });
       }
-      return bcrypt.compare(user.password, 10);
+      return bcrypt.compare(password, user.password);
     })
     .then(isValid => {
       if (!isValid) {
