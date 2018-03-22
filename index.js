@@ -1,17 +1,22 @@
 'use strict';
 
 const express = require('express');
+const passport = require('passport');
+const localStrategy = require('./passport/local');
+
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const {PORT, CLIENT_ORIGIN} = require('./config');
-// const {dbConnect} = require('./db-mongoose');
 const {dbConnect} = require('./db-knex');
 
 const app = express();
 const billsRouter = require('./routes/bills.router');
 const usersRouter = require('./routes/users.router');
+const authRouter = require('./routes/auth.router');
+
+passport.use(localStrategy);
 
 app.use(
   morgan(process.env.NODE_ENV === 'production' ? 'common' : 'dev', {
@@ -29,6 +34,7 @@ app.use(bodyParser.json());
 
 app.use('/api', billsRouter);
 app.use('/api', usersRouter);
+// app.use('/api', authRouter);
 
 app.use(function (req, res, next) {
   // console.log('404 error ran');
