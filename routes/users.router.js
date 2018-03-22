@@ -41,6 +41,11 @@ router.post ('/users', (req, res, next) => {
       }
     })
     .catch (err => {
+      if (err.code === '23505') {
+        err = new Error('The username already exists');
+        err.status = 400;
+        // return next(err);
+      }
       next(err);
     });
 
