@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 
 app.use('/api', billsRouter);
 app.use('/api', usersRouter);
-// app.use('/api', authRouter);
+app.use('/api', authRouter);
 
 app.use(function (req, res, next) {
   // console.log('404 error ran');
