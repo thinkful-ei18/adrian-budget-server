@@ -18,17 +18,13 @@ const localStrategy = new LocalStrategy((username, password, done) => {
   const knex = dbGet();
   let user;
 
-  function validatePassword (password) {
-    return bcrypt.compare(password, 10);
-  }
-
   knex.select('users.username', 'users.password')
     .from('users')
     .where('users.username', username)
     .first()
     .then(results => {
       user = results;
-      console.log(user);
+
       if (!user) {
         return Promise.reject({
           reason: 'LoginError',
@@ -36,18 +32,18 @@ const localStrategy = new LocalStrategy((username, password, done) => {
           location: 'username'
         });
       }
-      // return validatePassword(user.password);
+      return bcrypt.compare(user.password, 10);
     })
-    // .then(isValid => {
-    //   if (!isValid) {
-    //     return Promise.reject({
-    //       reason: 'LoginError',
-    //       message: 'Incorrect password',
-    //       location: 'password'
-    //     });
-    //   }
-    //   return done(null, user);
-    // })
+    .then(isValid => {
+      if (!isValid) {
+        return Promise.reject({
+          reason: 'LoginError',
+          message: 'Incorrect password',
+          location: 'password'
+        });
+      }
+      return done(null, user);
+    })
     .catch(err => {
       if(err.reason === 'LoginError') {
         return done(null, false);
