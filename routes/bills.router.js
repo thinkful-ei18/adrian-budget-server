@@ -61,6 +61,7 @@ router.post('/bills', (req, res, next) => {
         .leftJoin('categories', 'bills.category_id', 'categories.id')
         .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
         .where('bills.id', billId)
+        .andWhere('bills.user_id', userId)
         .first();
     })
     .then(result => {
@@ -75,12 +76,63 @@ router.post('/bills', (req, res, next) => {
     });
 });
 
+router.put('/bills/:id', (req, res, next) => {
+
+  const knex = dbGet();
+
+  const userId = req.user.id;
+  const billId = req.params.id;
+  const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
+
+  const updatedBill = {
+    user_id: userId,
+    name: name,
+    amount: amount,
+    category_id: category_id,
+    beenpaid: beenpaid,
+    duedate: duedate,
+    billinterval: billinterval
+  };
+
+  knex('bills.id').from('bills')
+    .where('bills.id', billId)
+    .andWhere('bills.user_id', userId)
+    .then(result => {
+      if (result && result.length > 0) {
+        knex('bills')
+          .update(updatedBill)
+          .where('id', billId)
+          .then(() => {
+            return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
+              .from('bills')
+              .leftJoin('users', 'bills.user_id', 'users.id')
+              .leftJoin('categories', 'bills.category_id', 'categories.id')
+              .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
+              .where('bills.id', billId)
+              .andWhere('bills.user_id', userId)
+              .first()
+              .then(result => {
+                if (result) {
+                  res.json(result);
+                }
+              });
+          });
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+
+});
+
+
 router.delete('/bills/:id', (req, res, next) => {
 
   const knex = dbGet();
   const userId = req.user.id;
   const billId = req.params.id;
-
 
   knex.del()
     .where('id', billId)
