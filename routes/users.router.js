@@ -111,4 +111,41 @@ router.post ('/users', (req, res, next) => {
 
 });
 
+router.put('/users/:id/income', (req, res, next) => {
+  const knex = dbGet();
+
+  const { income } = req.body;
+  const userId = req.params.id;
+  const userIncome = {
+    income: income
+  };
+
+  knex('users.id').from('users')
+    .where('users.id', userId)
+    .then(result => {
+      if (result && result.length > 0) {
+        knex('users')
+          .update(userIncome)
+          .where('id', userId)
+          .then(() => {
+            return knex.select('users.id', 'users.username', 'users.income')
+              .from('users')
+              .where('users.id', userId)
+              .first()
+              .then(result => {
+                if (result) {
+                  res.json(result);
+                }
+              });
+          });
+      } else {
+        next();
+      }
+    })
+    .catch(err => {
+      next(err);
+    });
+
+});
+
 module.exports = router;
