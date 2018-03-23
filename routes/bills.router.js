@@ -75,4 +75,25 @@ router.post('/bills', (req, res, next) => {
     });
 });
 
+router.delete('/bills/:id', (req, res, next) => {
+
+  const knex = dbGet();
+  const userId = req.user.id;
+  const billId = req.params.id;
+
+
+  knex.del()
+    .where('id', billId)
+    .andWhere('bills.user_id', userId)
+    .from('bills')
+    .then(result => {
+      if (result) {
+        res.status(204).end();
+      } else {
+        next();
+      }
+    })
+    .catch(next);
+});
+
 module.exports = router;
