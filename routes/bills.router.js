@@ -9,7 +9,7 @@ router.get('/bills', (req, res, next) => {
 
   const knex = dbGet();
 
-  let userId;
+  const userId = req.user.id;
 
   knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
     .from('bills')
@@ -17,7 +17,7 @@ router.get('/bills', (req, res, next) => {
     .leftJoin('categories', 'bills.category_id', 'categories.id')
     .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
     .orderBy('bills.id')
-    // .where('bills.user_id', 'users.id')
+    .where('bills.user_id', userId)
     .then(results => res.json(results))
     .catch(err => {next(err);
     });
@@ -28,6 +28,7 @@ router.post('/bills', (req, res, next) => {
   const knex = dbGet();
 
   const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
+  const userId = req.user.id;
 
   if (!req.body.name) {
     const err = new Error('Missing `name` in request body');
