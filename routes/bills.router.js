@@ -24,6 +24,7 @@ router.get('/bills', (req, res, next) => {
 });
 
 router.post('/bills', (req, res, next) => {
+  // decode jwt token and pull user.id from payload
 
   const knex = dbGet();
 
