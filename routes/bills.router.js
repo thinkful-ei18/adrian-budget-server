@@ -2,11 +2,11 @@
 
 const express = require('express');
 const router = express.Router();
+const jwtDecode = require('jwt-decode');
 
 const {dbGet} = require('../db-knex');
 
 router.get('/bills', (req, res, next) => {
-
   const knex = dbGet();
 
   const userId = req.user.id;
@@ -18,14 +18,16 @@ router.get('/bills', (req, res, next) => {
     .leftJoin('bills_categories', 'bills.id', 'bills_categories.bill_id')
     .orderBy('bills.id')
     .where('bills.user_id', userId)
-    .then(results => res.json(results))
-    .catch(err => {next(err);
+    .then(results => {
+      res.json(results);
+    })
+    .catch(err => {
+      next(err);
     });
 });
 
 router.post('/bills', (req, res, next) => {
   // decode jwt token and pull user.id from payload
-
   const knex = dbGet();
 
   const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
