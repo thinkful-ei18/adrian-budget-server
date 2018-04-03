@@ -111,6 +111,22 @@ router.post ('/users', (req, res, next) => {
 
 });
 
+router.get('/users/:id/income', (req, res, next) => {
+  const knex = dbGet();
+
+  const userId = req.params.id;
+  knex
+    .select('users.income')
+    .from('users')
+    .where('users.id', userId)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(err => {
+      next(err);
+    })
+})
+
 router.put('/users/:id/income', (req, res, next) => {
   const knex = dbGet();
 
