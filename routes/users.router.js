@@ -3,8 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-
 const {dbGet} = require('../db-knex');
+const { getUserId } = require('../utils/getUserId');
 
 router.post ('/users', (req, res, next) => {
   const knex = dbGet();
@@ -113,7 +113,7 @@ router.post ('/users', (req, res, next) => {
 
 router.get('/users/:id/income', (req, res, next) => {
   const knex = dbGet();
-
+  // getUserId
   const userId = req.params.id;
   knex
     .select('users.income')
