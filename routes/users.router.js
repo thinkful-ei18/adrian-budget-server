@@ -9,7 +9,7 @@ const {dbGet} = require('../db-knex');
 router.post ('/users', (req, res, next) => {
   const knex = dbGet();
 
-  const { fullname, username, password } = req.body;
+  const { firstname, username, password } = req.body;
 
   let userId;
 
@@ -22,7 +22,7 @@ router.post ('/users', (req, res, next) => {
     return next(err);
   }
 
-  const stringFields = ['username', 'password', 'fullname'];
+  const stringFields = ['username', 'password', 'firstname'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -76,7 +76,7 @@ router.post ('/users', (req, res, next) => {
   return bcrypt.hash(password, 10)
     .then(digest => {
       const newUser = {
-        fullname: fullname,
+        firstname: firstname,
         username: username,
         password: digest
       };
@@ -88,7 +88,7 @@ router.post ('/users', (req, res, next) => {
         });
     })
     .then(() => {
-      return knex.select('users.fullname', 'users.username')
+      return knex.select('users.firstname', 'users.username')
         .from('users')
         .where('users.id', userId)
         .first();
