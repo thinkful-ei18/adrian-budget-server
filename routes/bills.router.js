@@ -2,14 +2,13 @@
 
 const express = require('express');
 const router = express.Router();
-const jwtDecode = require('jwt-decode');
-
 const {dbGet} = require('../db-knex');
+const { getUserId } = require('../utils/getUserId');
+
 
 router.get('/bills', (req, res, next) => {
   const knex = dbGet();
-
-  const userId = req.user.id;
+  const userId = getUserId(req);
 
   knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
     .from('bills')
@@ -27,11 +26,10 @@ router.get('/bills', (req, res, next) => {
 });
 
 router.post('/bills', (req, res, next) => {
-  // decode jwt token and pull user.id from payload
   const knex = dbGet();
+  // const userId = getUserId(req);
 
   const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
-  const userId = req.user.id;
 
   if (!req.body.name) {
     const err = new Error('Missing `name` in request body');
