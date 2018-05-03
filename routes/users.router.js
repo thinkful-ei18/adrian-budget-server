@@ -93,9 +93,10 @@ router.post ('/users', (req, res, next) => {
         .where('users.id', userId)
         .first();
     })
-    .then (result => {
-      if (result) {
-        res.location(`${req.originalUrl}/${userId}`).status(201).json(result);
+    .then (user => {
+      console.log('user:', user);
+      if (user) {
+        res.location(`${req.originalUrl}/${userId}`).status(201).json(user);
       } else {
         next();
       }
@@ -124,8 +125,8 @@ router.get('/users/:id/income', (req, res, next) => {
     })
     .catch(err => {
       next(err);
-    })
-})
+    });
+});
 
 router.put('/users/:id/income', (req, res, next) => {
   const knex = dbGet();
