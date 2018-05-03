@@ -19,7 +19,7 @@ ALTER SEQUENCE categories_id_seq RESTART WITH 100;
 
 CREATE TABLE users (
   id serial PRIMARY KEY,
-  fullname text NOT NULL,
+  firstname text NOT NULL,
   username text NOT NULL UNIQUE,
   password text NOT NULL,
   income smallint,
