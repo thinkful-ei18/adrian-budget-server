@@ -94,7 +94,6 @@ router.post ('/users', (req, res, next) => {
         .first();
     })
     .then (user => {
-      console.log('user:', user);
       if (user) {
         res.location(`${req.originalUrl}/${userId}`).status(201).json(user);
       } else {
