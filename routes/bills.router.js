@@ -79,8 +79,7 @@ router.post('/bills', (req, res, next) => {
 router.put('/bills/:id', (req, res, next) => {
 
   const knex = dbGet();
-
-  const userId = req.user.id;
+  const userId = getUserId(req);
   const billId = req.params.id;
   const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
 
