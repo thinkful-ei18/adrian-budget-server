@@ -131,7 +131,7 @@ router.put('/users/income', (req, res, next) => {
   const knex = dbGet();
 
   const { income } = req.body;
-  const userId = req.params.id;
+  const userId = getUserId(req);
   const userIncome = {
     income: income
   };
@@ -144,13 +144,13 @@ router.put('/users/income', (req, res, next) => {
           .update(userIncome)
           .where('id', userId)
           .then(() => {
-            return knex.select('users.id', 'users.username', 'users.income')
+            return knex.select('users.income')
               .from('users')
               .where('users.id', userId)
               .first()
-              .then(result => {
-                if (result) {
-                  res.json(result);
+              .then(user => {
+                if (user) {
+                  res.json(user);
                 }
               });
           });
