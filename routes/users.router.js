@@ -8,9 +8,7 @@ const { getUserId } = require('../utils/getUserId');
 
 router.post ('/users', (req, res, next) => {
   const knex = dbGet();
-
   const { firstname, username, password } = req.body;
-
   let userId;
 
   const requiredFields = ['username', 'password'];
