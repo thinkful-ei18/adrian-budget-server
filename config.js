@@ -1,5 +1,7 @@
 'use strict';
 
+//old postgres URL: 'postgres://localhost/dev-budget-app'
+
 module.exports = {
   PORT: process.env.PORT || 8080,
   CLIENT_ORIGIN: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
