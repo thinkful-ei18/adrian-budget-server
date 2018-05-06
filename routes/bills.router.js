@@ -130,7 +130,7 @@ router.put('/bills/:id', (req, res, next) => {
 router.delete('/bills/:id', (req, res, next) => {
 
   const knex = dbGet();
-  const userId = req.user.id;
+  const userId = getUserId(req);
   const billId = req.params.id;
 
   knex.del()
