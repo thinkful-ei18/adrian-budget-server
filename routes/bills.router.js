@@ -30,9 +30,12 @@ router.post('/bills', (req, res, next) => {
   const userId = getUserId(req);
   const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
 
-  if (!req.body.name) {
-    const err = new Error('Missing `name` in request body');
-    err.status = 400;
+  const requiredFields = ['name', 'amount'];
+  const missingField = requiredFields.find(field => !(field in req.body));
+
+  if (missingField) {
+    const err = new Error(`Missing '${missingField}' in request body`);
+    err.status = 422;
     return next(err);
   }
 
