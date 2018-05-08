@@ -16,7 +16,7 @@ const localStrategy = new LocalStrategy((username, password, done) => {
   const knex = dbGet();
   let user;
 
-  knex.select('users.username', 'users.password', 'users.id')
+  knex.select()
     .from('users')
     .where('users.username', username)
     .first()
