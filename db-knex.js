@@ -10,10 +10,7 @@ function dbConnect(url = DATABASE_URL) {
   console.log('Connecting...');
   knex = createKnex({
     client: 'pg',
-    connection: {
-      user: 'dev',
-      database: 'dev-budget-app'
-    }
+    connection: url
 
   });
 }
