@@ -31,7 +31,7 @@ router.post ('/users', (req, res, next) => {
   );
 
   if (nonIncomeField) {
-    const err = new Error(`Field: '${nonStringField}' must be a number`);
+    const err = new Error(`Field: '${incomeField}' must be a number`);
     err.status = 422;
     return next(err);
   }
