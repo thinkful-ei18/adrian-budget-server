@@ -11,7 +11,7 @@ router.post ('/users', (req, res, next) => {
   const { firstname, username, password } = req.body;
   let userId;
 
-  const requiredFields = ['username', 'password'];
+  const requiredFields = ['username', 'password', 'income', 'firstname'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -25,13 +25,24 @@ router.post ('/users', (req, res, next) => {
     field => field in req.body && typeof req.body[field] !== 'string'
   );
 
-  if (nonStringField) {
-    const err = new Error(`Field: '${nonStringField}' must be type String`);
+  const incomeField = ['income'];
+  const nonIncomeField = incomeField.find(
+    field => field in req.body && typeof req.body[field] !== 'number'
+  );
+
+  if (nonIncomeField) {
+    const err = new Error(`Field: '${nonStringField}' must be a number`);
     err.status = 422;
     return next(err);
   }
 
-  const explicityTrimmedFields = ['username', 'password'];
+  if (nonStringField) {
+    const err = new Error(`Field: '${nonStringField}' must be a string`);
+    err.status = 422;
+    return next(err);
+  }
+
+  const explicityTrimmedFields = ['username', 'password', 'income', 'firstname'];
   const nonTrimmedField = explicityTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
   );
