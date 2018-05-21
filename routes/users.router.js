@@ -8,7 +8,7 @@ const { getUserId } = require('../utils/getUserId');
 
 router.post ('/users', (req, res, next) => {
   const knex = dbGet();
-  const { firstname, username, password } = req.body;
+  const { firstname, username, password, income } = req.body;
   let userId;
 
   const requiredFields = ['username', 'password', 'income', 'firstname'];
@@ -42,7 +42,7 @@ router.post ('/users', (req, res, next) => {
     return next(err);
   }
 
-  const explicityTrimmedFields = ['username', 'password', 'income', 'firstname'];
+  const explicityTrimmedFields = ['username', 'password', 'firstname'];
   const nonTrimmedField = explicityTrimmedFields.find(
     field => req.body[field].trim() !== req.body[field]
   );
@@ -87,6 +87,7 @@ router.post ('/users', (req, res, next) => {
       const newUser = {
         firstname: firstname,
         username: username,
+        income: income,
         password: digest
       };
       return knex.insert(newUser)
