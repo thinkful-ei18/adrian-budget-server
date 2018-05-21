@@ -10,7 +10,7 @@ router.get('/bills', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
 
-  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
+  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
     .from('bills')
     .leftJoin('users', 'bills.user_id', 'users.id')
     .leftJoin('categories', 'bills.category_id', 'categories.id')
@@ -28,9 +28,9 @@ router.get('/bills', (req, res, next) => {
 router.post('/bills', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
-  const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
+  const { title, amount, category_id, beenpaid, duedate, billinterval } = req.body;
 
-  const requiredFields = ['name', 'amount'];
+  const requiredFields = ['title', 'amount'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
   if (missingField) {
@@ -41,7 +41,7 @@ router.post('/bills', (req, res, next) => {
 
   const newBill = {
     user_id: userId,
-    name: name,
+    title: title,
     amount: amount,
     category_id: category_id,
     beenpaid: beenpaid,
@@ -58,7 +58,7 @@ router.post('/bills', (req, res, next) => {
       billId = id;
     })
     .then(() => {
-      return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
+      return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
         .from('bills')
         .leftJoin('users', 'bills.user_id', 'users.id')
         .leftJoin('categories', 'bills.category_id', 'categories.id')
@@ -84,11 +84,11 @@ router.put('/bills/:id', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
   const billId = req.params.id;
-  const { name, amount, category_id, beenpaid, duedate, billinterval } = req.body;
+  const { title, amount, category_id, beenpaid, duedate, billinterval } = req.body;
 
   const updatedBill = {
     user_id: userId,
-    name: name,
+    title: title,
     amount: amount,
     category_id: category_id,
     beenpaid: beenpaid,
@@ -105,7 +105,7 @@ router.put('/bills/:id', (req, res, next) => {
           .update(updatedBill)
           .where('id', billId)
           .then(() => {
-            return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'name', 'amount')
+            return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
               .from('bills')
               .leftJoin('users', 'bills.user_id', 'users.id')
               .leftJoin('categories', 'bills.category_id', 'categories.id')
