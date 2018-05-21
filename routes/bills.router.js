@@ -10,7 +10,7 @@ router.get('/bills', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
 
-  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
+  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'bills.title', 'bills.amount')
     .from('bills')
     .leftJoin('users', 'bills.user_id', 'users.id')
     .leftJoin('categories', 'bills.category_id', 'categories.id')
@@ -58,7 +58,7 @@ router.post('/bills', (req, res, next) => {
       billId = id;
     })
     .then(() => {
-      return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
+      return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'bills.title', 'bills.amount')
         .from('bills')
         .leftJoin('users', 'bills.user_id', 'users.id')
         .leftJoin('categories', 'bills.category_id', 'categories.id')
@@ -105,7 +105,7 @@ router.put('/bills/:id', (req, res, next) => {
           .update(updatedBill)
           .where('id', billId)
           .then(() => {
-            return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'title', 'amount')
+            return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'bills.title', 'bills.amount')
               .from('bills')
               .leftJoin('users', 'bills.user_id', 'users.id')
               .leftJoin('categories', 'bills.category_id', 'categories.id')
