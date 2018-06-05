@@ -28,7 +28,7 @@ router.get('/bills', (req, res, next) => {
 router.post('/bills', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
-  const { title, amount, category_id, beenpaid, duedate, billinterval } = req.body;
+  const { title, amount, category_id, duedate, billinterval } = req.body;
 
   const requiredFields = ['title', 'amount'];
   const missingField = requiredFields.find(field => !(field in req.body));
@@ -44,7 +44,7 @@ router.post('/bills', (req, res, next) => {
     title: title,
     amount: amount,
     category_id: category_id,
-    beenpaid: beenpaid,
+    beenpaid: false,
     duedate: duedate,
     billinterval: billinterval
   };
