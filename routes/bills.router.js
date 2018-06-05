@@ -58,7 +58,7 @@ router.post('/bills', (req, res, next) => {
       billId = id;
     })
     .then(() => {
-      return knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'bills.title', 'bills.amount')
+      return knex.select('bills.id', 'bills.user_id', 'bills.title', 'bills.amount', 'bills.billinterval')
         .from('bills')
         .leftJoin('users', 'bills.user_id', 'users.id')
         .leftJoin('categories', 'bills.category_id', 'categories.id')
