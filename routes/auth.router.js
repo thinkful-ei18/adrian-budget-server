@@ -27,8 +27,14 @@ router.post('/login', localAuth, function (req, res) {
 const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
 
 router.post('/refresh', jwtAuth, (req, res) => {
+  const hasNumbers = /\d/; // On the front-end, we can send values that can be added into the new, refreshed token.
+
+
+  if (hasNumbers.test(req.body.value)) {
+    req.user.income = req.body.value; // Ensures that income is updated on refresh! May need this later, so I'm keeping it reusable!
+  }
   const authToken = createAuthToken(req.user);
-  res.json({ authToken });
+  return res.json({ authToken });
 });
 
 module.exports = router;
