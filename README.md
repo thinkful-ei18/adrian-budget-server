@@ -1,45 +1,64 @@
-# Thinkful Backend Template
+# Windfall Backend Server
+Windfall is a simplified budgeting app that lets you create and maintain a list of bills. 
 
-A template for developing and deploying Node.js apps.
+The back-end server was built with Express.js and deployed with Heroku using a PostgresQL database and knex.js for query building. I used Thinkful's back-end template. I also used DBeaver to create SQL scripts as an easy way to create seed data and Postman to test my endpoints. 
 
-## Getting started
+## Windfall Schemas & Endpoints
+The API route consists of ```*API_BASE_URL*/api/xyz```. The database URL string needs to go in an .env file with a variable called ```DATABASE_URL```. It will be called in db-knex .js in the root folder.
 
-### Setting up a project
+You can POST new users at /users (id, firstname username, income), login with /login (username, password), and change a user's income at /users/income (income: Number, a protected endpoint!). On login, you will receive a JWT with a user's id, firstname username, income. User IDs start at 1.
 
-* Move into your projects directory: `cd ~/YOUR_PROJECTS_DIRECTORY`
-* Clone this repository: `git clone https://github.com/Thinkful-Ed/backend-template YOUR_PROJECT_NAME`
-* Move into the project directory: `cd YOUR_PROJECT_NAME`
-* Install the dependencies: `npm install`
-* Create a new repo on GitHub: https://github.com/new
-    * Make sure the "Initialize this repository with a README" option is left unchecked
-* Update the remote to point to your GitHub repository: `git remote set-url origin https://github.com/YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME`
+``` sql
+CREATE TABLE users (
+  id serial PRIMARY KEY,
+  firstname text NOT NULL,
+  username text NOT NULL UNIQUE,
+  password text NOT NULL,
+  income smallint,
+  created timestamp DEFAULT now()
+);
+```
 
-### Working on the project
+Bill endpoints are protected and require a JWT which is decoded so the user's id can be used for queries. 
+You can /GET bills, POST a single bill to /bills, delete a bill at /bills/:id, or modify a bill at PUT /bills/:id. ```title``` and ```amount``` are the only fields that are required.
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Run the development task: `npm start`
-    * Starts a server running at http://localhost:8080
-    * Automatically restarts when any of your files change
+Currently, the bill schema features a few unused fields that will be utilized when extension features are fleshed out. Bill IDs start at 1000.
 
-## Databases
+``` sql
+CREATE TABLE bills (
+  id serial PRIMARY KEY,
+  category_id int REFERENCES categories ON DELETE RESTRICT,
+  user_id int REFERENCES users ON DELETE RESTRICT,
+  name text NOT NULL,
+  amount smallint NOT NULL,
+  beenpaid boolean,
+  duedate date,
+  billinterval interval,
+  created timestamp DEFAULT now()
+);
 
-By default, the template is configured to connect to a MongoDB database using Mongoose.  It can be changed to connect to a PostgreSQL database using Knex by replacing any imports of `db-mongoose.js` with imports of `db-knex.js`, and uncommenting the Postgres `DATABASE_URL` lines in `config.js`.
+ALTER SEQUENCE bills_id_seq RESTART WITH 1000;
+```
 
-## Deployment
+There are also categories, which will be used when extension features are done:
 
-Requires the [Heroku CLI client](https://devcenter.heroku.com/articles/heroku-command-line).
+```sql
+CREATE TABLE categories (
+  id serial PRIMARY KEY,
+  title text NOT NULL UNIQUE
+);
 
-### Setting up the project on Heroku
+CREATE TABLE bills_categories (
+  bill_id INTEGER NOT NULL REFERENCES bills ON DELETE CASCADE,
+  category_id INTEGER NOT NULL REFERENCES categories ON DELETE CASCADE
+);
+```
 
-* Move into the project directory: `cd ~/YOUR_PROJECTS_DIRECTORY/YOUR_PROJECT_NAME`
-* Create the Heroku app: `heroku create PROJECT_NAME`
+## Utilities
+In /utils/ getUserId.js parses the userId from JWTs.
 
-* If your backend connects to a database, you need to configure the database URL:
-    * For a MongoDB database: `heroku config:set DATABASE_URL=mongodb://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
-    * For a PostgreSQL database: `heroku config:set DATABASE_URL=postgresql://USERNAME:PASSWORD@HOST:PORT/DATABASE_NAME`
+### Front-End Repo
+The repo for the front-end can be found at: https://github.com/thinkful-ei18/adrian-budget-client. It is built with React JS, React Redux, and uses Redux forms. 
 
-* If you are creating a full-stack app, you need to configure the client origin: `heroku config:set CLIENT_ORIGIN=https://www.YOUR_DEPLOYED_CLIENT.com`
-
-### Deploying to Heroku
-
-* Push your code to Heroku: `git push heroku master`
+### Live App
+The live app is deployed at http://adrian-budget-app.netlify.com/.
