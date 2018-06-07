@@ -10,7 +10,7 @@ router.get('/bills', (req, res, next) => {
   const knex = dbGet();
   const userId = getUserId(req);
 
-  knex.select('bills.id', 'bills.category_id', 'bills.user_id', 'bills.title', 'bills.amount')
+  knex.select('bills.id', 'bills.user_id', 'bills.title', 'bills.amount', 'bills.billinterval')
     .from('bills')
     .leftJoin('users', 'bills.user_id', 'users.id')
     .leftJoin('categories', 'bills.category_id', 'categories.id')
