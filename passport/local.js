@@ -24,21 +24,23 @@ const localStrategy = new LocalStrategy((username, password, done) => {
       user = results;
 
       if (!user) {
-        return Promise.reject({
-          reason: 'LoginError',
-          message: 'Incorrect username',
-          location: 'username'
-        });
+        throw new Error(`The username ${username} has not been registered.`);
+        // return Promise.reject({
+        //   reason: 'LoginError',
+        //   message: 'Incorrect username',
+        //   location: 'username'
+        // });
       }
       return bcrypt.compare(password, user.password);
     })
     .then(isValid => {
       if (!isValid) {
-        return Promise.reject({
-          reason: 'LoginError',
-          message: 'Incorrect password',
-          location: 'password'
-        });
+        throw new Error('The password is incorrect, please try again.');
+        // return Promise.reject({
+        //   reason: 'LoginError',
+        //   message: 'Incorrect password',
+        //   location: 'password'
+        // });
       }
       return done(null, user);
     })
