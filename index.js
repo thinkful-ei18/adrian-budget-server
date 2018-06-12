@@ -3,6 +3,7 @@
 require('dotenv').config();
 
 const express = require('express');
+const path = require('path');
 const passport = require('passport');
 const localStrategy = require('./passport/local');
 const jwtStrategy = require('./passport/jwt');
@@ -33,6 +34,9 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+app.use(express.static('public'));
+
 
 app.use('/api', usersRouter);
 app.use('/api', authRouter);
