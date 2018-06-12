@@ -58,7 +58,7 @@ CREATE TABLE bills_categories (
 In /utils/ getUserId.js parses the userId from JWTs.
 
 ### Front-End Repo
-The repo for the front-end can be found at: https://github.com/thinkful-ei18/adrian-budget-client. It is built with React JS, React Redux, and uses Redux forms. 
+The repo for the front-end can be found at: https://github.com/thinkful-ei18/windfall-client. It is built with React JS, React Redux, and uses Redux forms. 
 
 ### Live App
-The live app is deployed at http://adrian-budget-app.netlify.com/.
+The live app is deployed at https://windfall-app.netlify.com/.
